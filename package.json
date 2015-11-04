@@ -1,0 +1,14 @@
+{
+    "type": "application",
+    "id": "com.lacie.youtube-dl",
+    "version": "1.2",
+    "depends": [
+        "org.debian.wheezy-lamp-1.2"
+    ],
+    "startup_mode": "auto",
+    "display_mode": "embedded",
+    "redirect_mode": "custom",
+    "network_ports": {
+        "WEB_UI": 4576
+    }
+}

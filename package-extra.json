@@ -1,0 +1,21 @@
+{
+    "name": {
+        "en": "Web Video Downloader"
+    },
+    "description_short": {
+        "en": "Web Video Downloader is a program to download videos from YouTube.com and a few more sites."
+    },
+    "visibility": "always",
+    "publisher_contact": "lateam@internet.com",
+    "categories": [
+        "video",
+        "multimedia",
+        "demo_apps"
+    ],
+    "publication_date": "2013-10-27",
+    "publisher_name": "Automattic",
+    "supported_languages": [
+        "en"
+    ],
+    "website_url": "http://rg3.github.io/youtube-dl/"
+}
