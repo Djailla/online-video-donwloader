@@ -7,6 +7,7 @@ import re
 from subprocess import Popen, PIPE, STDOUT
 from threading import Thread
 
+
 class YoutubeDownloadProcess(Thread):
     url = ''
     dest_path = ''
