@@ -32,10 +32,12 @@ def main():
             dl_process.join()
             dl_process = None
 
-    path_list = ''.join('<option>%s</option>\n' % os.path.join(ROOT_PATH, folder)
-                        for folder in os.listdir(ROOT_PATH)
-                        if not folder.startswith('.'))
-    print path_list
+    try:
+        path_list = ''.join('<option>%s</option>\n' % os.path.join(ROOT_PATH, folder)
+                            for folder in os.listdir(ROOT_PATH)
+                            if not folder.startswith('.'))
+    except:
+        path_list = '<option>No folder available</option>'
 
     return template('download', path_list=path_list)
 

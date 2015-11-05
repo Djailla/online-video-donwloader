@@ -1,7 +1,7 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html>
   <head>
-    <link rel="stylesheet" href="css/stylesheet.css"></script>
+    <link rel="stylesheet" href="css/stylesheet.css">
   </head>
   <body>
     <h1>{{title}}</h1>
