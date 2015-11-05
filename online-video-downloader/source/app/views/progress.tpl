@@ -1,10 +1,11 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html>
   <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="js/jquery.percentageloader-0.1.min.js"></script>
-    <link rel="stylesheet" href="css/stylesheet.css"></script>
-    <link rel="stylesheet" href="css/progress.css"></script>
+    <link rel="stylesheet" href="css/stylesheet.css">
+    <link rel="stylesheet" href="css/progress.css">
   </head>
   <body>
     <div id="container">

@@ -12,11 +12,35 @@
 body {
     background-image: url("../img/bg.gif");
     font-family: 'BebasNeueRegular';
-    font-size: 40px;
+    font-size: 30px;
     text-align: center;
     text-shadow: 1px 1px 3px #666666;
-
 }
+
+h1 {
+  font-size: 40px;
+}
+
+h2 {
+  font-size: 30px; 
+}
+
+h3 {
+  font-size: 20px; 
+}
+
+select {
+  border: 1px solid #111;
+  width: 400px;
+  padding: 5px 35px 5px 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  height: 34px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #eee;
+} 
 
 .btn {
   background: #3498db;
