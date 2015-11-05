@@ -4,36 +4,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="js/jquery.percentageloader-0.1.min.js"></script>
     <link rel="stylesheet" href="css/stylesheet.css"></script>
-
-    <style>
-      body {
-        margin: 0px;
-        padding: 0px;
-      }
-
-      #topLoader {
-        width: 256px;
-        height: 256px;
-        margin-bottom: 32px;
-      }
-
-      #container {
-        width: 256px;
-        padding: 10px;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-      }
-    </style>
-
+    <link rel="stylesheet" href="css/progress.css"></script>
   </head>
   <body>
     <div id="container">
       <div id="topLoader">
       </div>
-
       <a class="btn" href="/cancel">Cancel</a>
-
       <script>
         $(function() {
           var $topLoader = $("#topLoader").percentageLoader({
@@ -70,9 +47,7 @@
               window.location = "/complete";
             }
           }
-
           setTimeout(animateFunc, 500);
-
         });
       </script>
     </div>

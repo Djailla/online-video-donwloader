@@ -7,6 +7,9 @@ import os
 from bottle import request, static_file, redirect, template, Bottle
 from youtube import YoutubeDownloadProcess
 
+ROOT_PATH = "/shares"
+# ROOT_PATH = "/Users/gid509037/Perso/shares"
+
 config = None
 try:
     with open('/opt/youtube/.config') as f:
@@ -14,12 +17,8 @@ try:
 except:
     print 'Failed to load configuration'
 
-dl_process = None
-
 app = Bottle()
-
-ROOT_PATH = "/shares"
-# ROOT_PATH = "/Users/gid509037/Perso/shares"
+dl_process = None
 
 
 @app.route('/')
