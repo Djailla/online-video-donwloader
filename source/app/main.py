@@ -6,18 +6,21 @@ import os
 
 from bottle import request, static_file, redirect, template, Bottle
 from youtube import YoutubeDownloadProcess
-from browser import browse
 
 config = None
 try:
     with open('/opt/youtube/.config') as f:
-        config=json.load(f)
+        config = json.load(f)
 except:
     print 'Failed to load configuration'
 
 dl_process = None
 
 app = Bottle()
+
+ROOT_PATH = "/shares"
+# ROOT_PATH = "/Users/gid509037/Perso/shares"
+
 
 @app.route('/')
 def main():
@@ -30,29 +33,38 @@ def main():
             dl_process.join()
             dl_process = None
 
-    default_path = '/shares/Public'
+    path_list = ''.join('<option>%s</option>\n' % os.path.join(ROOT_PATH, folder)
+                        for folder in os.listdir(ROOT_PATH)
+                        if not folder.startswith('.'))
+    print path_list
 
-    return template('download', default_path=default_path)
+    return template('download', path_list=path_list)
+
 
 @app.route('/static/<filename>')
 def server_static(filename):
     return static_file(filename, root='./static/')
 
+
 @app.route('/css/<filename>')
 def server_css(filename):
     return static_file(filename, root='./static/css/')
+
 
 @app.route('/css/fonts/<filename>')
 def server_fonts(filename):
     return static_file(filename, root='./static/css/fonts/')
 
+
 @app.route('/js/<filename>')
 def server_js(filename):
     return static_file(filename, root='./static/js/')
 
+
 @app.route('/img/<filename>')
 def server_img(filename):
     return static_file(filename, root='./static/img/')
+
 
 @app.get('/progress')
 def progress():
@@ -63,19 +75,11 @@ def progress():
         return json.dumps({'progress': -1,
                            'speed': ''})
 
-@app.post('/browse')
-def get_browse():
-    path = request.forms.get('path')
-
-    return browse(path, folder_only=True, recursive=False)
-
-@app.get('/browser')
-def browser():
-    return template('browser')
 
 @app.error(404)
 def error404(error):
     return template('result', title='Error 404 : Nothing to do here')
+
 
 @app.post('/download')
 def do_download():
@@ -95,10 +99,10 @@ def do_download():
     return template('progress')
 
 
-
 @app.get('/complete')
 def complete():
     return template('result', title='Download complete', subtitle=dl_process.get_file_name())
+
 
 @app.get('/dl_error')
 def dl_error():
@@ -108,6 +112,7 @@ def dl_error():
         sub = "Unknown error"
 
     return template('result', title='Error', subtitle=sub)
+
 
 @app.get('/cancel')
 def cancel():
