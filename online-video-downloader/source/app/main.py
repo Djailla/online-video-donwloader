@@ -90,7 +90,11 @@ def do_download():
     url = request.forms.get('url')
 
     if not os.path.isdir(dest_path):
-        return template('result', title='Error', subtitle='The destination path "%s" is not valid' % dest_path)
+        return template(
+            'result',
+            title='Error',
+            subtitle='The destination path "%s" is not valid' % dest_path
+        )
 
     dl_process = YoutubeDownloadProcess()
     dl_process.dest_path = dest_path
@@ -102,7 +106,12 @@ def do_download():
 
 @app.get('/complete')
 def complete():
-    return template('result', title='Download complete', subtitle=dl_process.get_file_name())
+    return template(
+        'result',
+        title='Download complete',
+        subtitle=dl_process.get_file_name(),
+        dest_path=dl_process.dest_path
+    )
 
 
 @app.get('/dl_error')
