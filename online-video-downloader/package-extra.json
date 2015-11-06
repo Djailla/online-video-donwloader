@@ -1,21 +1,20 @@
 {
     "name": {
-        "en": "Web Video Downloader"
+        "en": "Online Video Downloader"
     },
     "description_short": {
-        "en": "Web Video Downloader is a program to download videos from YouTube.com and a few more sites."
+        "en": "Online Video Downloader is a program to download videos from YouTube.com and a few more sites."
     },
     "visibility": "always",
-    "publisher_contact": "lateam@internet.com",
+    "publisher_contact": "bastien.vallet@gmail.com",
     "categories": [
         "video",
-        "multimedia",
-        "demo_apps"
+        "multimedia"
     ],
-    "publication_date": "2013-10-27",
-    "publisher_name": "Automattic",
+    "publication_date": "2015-11-06",
+    "publisher_name": "Djailla",
     "supported_languages": [
         "en"
     ],
-    "website_url": "http://rg3.github.io/youtube-dl/"
+    "website_url": "https://github.com/Djailla/online-video-donwloader/"
 }
