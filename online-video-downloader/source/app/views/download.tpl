@@ -38,6 +38,6 @@
       <input class="btn" value="Download" type="submit" />
     </form>
     <br>
-    <p style="font-size: 20px;"><a href="https://rg3.github.io/youtube-dl/supportedsites.html" target="_blank">Supported sites</a><p>
+    <p><a href="https://rg3.github.io/youtube-dl/supportedsites.html" target="_blank">Supported sites</a><p>
   </body>
 </html>

@@ -6,8 +6,6 @@
   <body>
     <h1>{{title}}</h1>
     <h2>{{subtitle}}</h2>
-    <h3>in</h3>
-    <h2>{{dest_path}}</h2>
-    <a class="btn" href="/">Ok</a>
+    <a class="btn" href="/">Back</a>
   </body>
 </html>

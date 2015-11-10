@@ -86,24 +86,31 @@ def error404(error):
 def do_download():
     global dl_process
 
-    dest_path = request.forms.get('dest_path')
-    url = request.forms.get('url')
-    subs = request.forms.get('subs')
+    try:
+        dest_path = request.forms.get('dest_path')
+        url = request.forms.get('url')
+        subs = request.forms.get('subs')
 
-    if not os.path.isdir(dest_path):
+        if not os.path.isdir(dest_path):
+            return template(
+                'result',
+                title='Error',
+                subtitle='The destination path "%s" is not valid' % dest_path
+            )
+
+        dl_process = YoutubeDownloadProcess()
+        dl_process.dest_path = dest_path
+        dl_process.subs = subs
+        dl_process.url = url
+        dl_process.start()
+
+        return template('progress')
+    except:
         return template(
-            'result',
+            'error',
             title='Error',
-            subtitle='The destination path "%s" is not valid' % dest_path
+            subtitle='Unexpected error'
         )
-
-    dl_process = YoutubeDownloadProcess()
-    dl_process.dest_path = dest_path
-    dl_process.subs = subs
-    dl_process.url = url
-    dl_process.start()
-
-    return template('progress')
 
 
 @app.get('/complete')
@@ -123,7 +130,11 @@ def dl_error():
     else:
         sub = "Unknown error"
 
-    return template('result', title='Error', subtitle=sub)
+    return template(
+        'error',
+        title='Error',
+        subtitle=sub
+    )
 
 
 @app.get('/cancel')
