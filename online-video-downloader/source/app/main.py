@@ -88,6 +88,7 @@ def do_download():
 
     dest_path = request.forms.get('dest_path')
     url = request.forms.get('url')
+    subs = request.forms.get('subs')
 
     if not os.path.isdir(dest_path):
         return template(
@@ -98,6 +99,7 @@ def do_download():
 
     dl_process = YoutubeDownloadProcess()
     dl_process.dest_path = dest_path
+    dl_process.subs = subs
     dl_process.url = url
     dl_process.start()
 

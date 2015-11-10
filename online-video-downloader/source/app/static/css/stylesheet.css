@@ -12,7 +12,7 @@
 body {
     background-image: url("../img/bg.gif");
     font-family: 'BebasNeueRegular';
-    font-size: 30px;
+    font-size: 20px;
     text-align: center;
     text-shadow: 1px 1px 3px #666666;
 }
@@ -42,6 +42,12 @@ select {
   background: #eee;
 }
 
+input[type=text]
+{
+    font-size:20px;
+    width: 500px;
+}
+
 .btn {
   background: #3498db;
   background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
@@ -68,10 +74,4 @@ select {
   background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
   background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
   text-decoration: none;
-}
-
-input[type=text]
-{
-    font-size:0.5em;
-    width: 500px;
 }
