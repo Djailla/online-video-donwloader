@@ -11,6 +11,7 @@ from threading import Thread
 class YoutubeDownloadProcess(Thread):
     url = ''
     dest_path = ''
+    subs = False
     video_file_name = ''
 
     progress = 0
@@ -23,11 +24,16 @@ class YoutubeDownloadProcess(Thread):
         return os.path.basename(self.video_file_name)
 
     def run(self):
-        self.process = Popen([
+        cmd = [
             "youtube-dl",
             self.url,
             "-o", self.dest_path.rstrip('/') + '/' + "%(title)s.%(ext)s",
-            "--newline"], stdout=PIPE, stderr=STDOUT)
+            "--newline"
+        ]
+        if self.subs:
+            cmd.append('--all-subs')
+
+        self.process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
 
         while 1:
             line = self.process.stdout.readline()

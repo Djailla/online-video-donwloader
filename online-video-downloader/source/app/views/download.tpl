@@ -23,7 +23,8 @@
     <h1>Online Video Downloader</h1>
     <form action="/download" method="post">
       <h2>URL</h2>
-      <input name="url" type="text" title="Please copy here the URL of the video to download."/><br/><br/>
+      <p><input name="url" type="text" title="Please copy here the URL of the video to download."/><p>
+      <p><input type="checkbox" name="subs">&nbsp;&nbsp;Include Subtitles</p><br/>
       <h2>Destination</h2>
       <select name="dest_path">
         {{!path_list}}!
