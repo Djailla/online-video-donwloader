@@ -28,7 +28,8 @@ class YoutubeDownloadProcess(Thread):
             "youtube-dl",
             self.url,
             "-o", self.dest_path.rstrip('/') + '/' + "%(title)s.%(ext)s",
-            "--newline"
+            "--newline",
+            "--no-check-certificate"
         ]
         if self.subs:
             cmd.append('--all-subs')
