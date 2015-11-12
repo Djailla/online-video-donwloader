@@ -1,6 +1,6 @@
 {
     "type": "application",
-    "id": "com.lacie.online-video-downloader",
+    "id": "com.djailla.online-video-downloader",
     "version": "1.0.1",
     "depends": [
         "org.debian.wheezy-lamp-1.2"
