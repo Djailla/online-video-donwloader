@@ -9,8 +9,8 @@ from youtube import YoutubeDownloadProcess
 from default_app import app
 
 
-ROOT_PATH = "/shares"
-# ROOT_PATH = "/Users/gid509037/Perso/shares"
+SHARES_ROOT_PATH = "/shares"
+# SHARES_ROOT_PATH = "/Users/gid509037/Perso/shares"
 
 config = None
 try:
@@ -34,9 +34,10 @@ def main():
             dl_process = None
 
     try:
-        path_list = ''.join('<option>%s</option>\n' % os.path.join(ROOT_PATH, folder)
-                            for folder in os.listdir(ROOT_PATH)
-                            if not folder.startswith('.'))
+        path_list = ''.join(
+            '<option>%s</option>\n' % os.path.join(SHARES_ROOT_PATH, folder)
+            for folder in os.listdir(SHARES_ROOT_PATH)
+            if not folder.startswith('.'))
     except:
         path_list = '<option>No folder available</option>'
 
