@@ -6,7 +6,7 @@ import os
 
 from bottle import request, redirect, template
 from youtube import YoutubeDownloadProcess
-from default_app import app
+from default_app import app, parent_app, APPLICATION_ROOT
 
 
 SHARES_ROOT_PATH = "/shares"
@@ -23,6 +23,7 @@ dl_process = None
 
 
 @app.route('/')
+@app.route('/index')
 def main():
     global dl_process
 
@@ -118,7 +119,12 @@ def cancel():
         dl_process.join()
         dl_process = None
 
-    redirect("/")
+    redirect("index")
 
+parent_app.mount(APPLICATION_ROOT, app)
+parent_app.run(host='0.0.0.0', port=(config and config.get('port', 8080)) or 8080)
 
-app.run(host='0.0.0.0', port=(config and config.get('port', 8080)) or 8080)
+# # DEBUG MODE
+# import bottle
+# bottle.debug(True)
+# parent_app.run(host='0.0.0.0', port=(config and config.get('port', 8080)) or 8080, reloader=True)

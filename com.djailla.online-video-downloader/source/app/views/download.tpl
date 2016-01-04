@@ -22,7 +22,7 @@
   </head>
   <body>
     <h1>Online Video Downloader</h1>
-    <form action="/download" method="post">
+    <form action="download" method="post">
       <h2>URL</h2>
       <p><input name="url" type="text" title="Please copy here the URL of the video to download."/><p>
       <p>Include Subtitles</p>

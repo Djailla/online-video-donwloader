@@ -1,10 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from bottle import static_file, redirect, template, Bottle
 
-
-from bottle import static_file, template, Bottle
-
+parent_app = Bottle()
 app = Bottle()
+APPLICATION_ROOT = '/apps/online-video-downloader/'
+
+
+@parent_app.route('/')
+def parent_default():
+    redirect(APPLICATION_ROOT)
+
+
+@parent_app.error(404)
+def parent_404(error):
+    return template('result', title='Error 404 : Nothing to do here')
 
 
 @app.route('/static/<filename>')

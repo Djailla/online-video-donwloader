@@ -7,7 +7,7 @@
     ],
     "startup_mode": "auto",
     "display_mode": "tab",
-    "redirect_mode": "custom",
+    "redirect_mode": "transparent",
     "network_ports": {
         "WEB_UI": 4576
     }

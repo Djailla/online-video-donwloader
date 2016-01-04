@@ -11,7 +11,7 @@
     <div id="container">
       <div id="topLoader">
       </div>
-      <a class="btn" href="/cancel">Cancel</a>
+      <a class="btn" href="cancel">Cancel</a>
       <script>
         $(function() {
           var $topLoader = $("#topLoader").percentageLoader({
@@ -31,7 +31,7 @@
           var speed = 0;
 
           var animateFunc = function() {
-            $.get('/progress', function(result){
+            $.get('progress', function(result){
               progress = result.progress;
               speed = result.speed;
             }, 'json');
@@ -40,12 +40,12 @@
             $topLoader.setValue(speed);
 
             if (progress == -1) {
-              window.location = "/dl_error";
+              window.location = "dl_error";
             }
             else if (progress < 100) {
               setTimeout(animateFunc, 500);
             } else {
-              window.location = "/complete";
+              window.location = "complete";
             }
           }
           setTimeout(animateFunc, 500);

@@ -6,6 +6,6 @@
   <body>
     <h1>{{title}}</h1>
     <h2>{{subtitle}}</h2>
-    <a class="btn" href="/">Back</a>
+    <a class="btn" href="index">Back</a>
   </body>
 </html>
