@@ -20,7 +20,8 @@ class YoutubeDownloadProcess(Thread):
     size = ''
     error = ''
 
-    def get_file_name(self):
+    @property
+    def file_name(self):
         return os.path.basename(self.video_file_name)
 
     def run(self):

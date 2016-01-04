@@ -1,6 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+This is the main file for the bottle based web interface
+of the Online Video Downloader
+"""
+
+import logging
 import json
 import os
 
@@ -8,16 +14,23 @@ from bottle import request, redirect, template
 from youtube import YoutubeDownloadProcess
 from default_app import app, parent_app, APPLICATION_ROOT
 
+LOGGER_FORMAT = '[%(asctime)-15s] - {%(levelname)s} - %(message)s'
+logging.basicConfig(format=LOGGER_FORMAT, level=logging.DEBUG)
+
 
 SHARES_ROOT_PATH = "/shares"
 # SHARES_ROOT_PATH = "/Users/gid509037/Perso/shares"
 
-config = None
+CONFIG_FILE = '/opt/youtube/.config'
+CONFIG = None
 try:
-    with open('/opt/youtube/.config') as f:
-        config = json.load(f)
-except:
-    print 'Failed to load configuration'
+    with open(CONFIG_FILE) as f:
+        CONFIG = json.load(f)
+except IOError:
+    logging.warning(
+        'Failed to load configuration file (%s)',
+        CONFIG_FILE
+    )
 
 dl_process = None
 
@@ -25,6 +38,7 @@ dl_process = None
 @app.route('/')
 @app.route('/index')
 def main():
+    """Main loop of the web interface"""
     global dl_process
 
     if dl_process is not None:
@@ -38,7 +52,8 @@ def main():
         path_list = ''.join(
             '<option>%s</option>\n' % os.path.join(SHARES_ROOT_PATH, folder)
             for folder in os.listdir(SHARES_ROOT_PATH)
-            if not folder.startswith('.'))
+            if not folder.startswith('.')
+        )
     except:
         path_list = '<option>No folder available</option>'
 
@@ -47,6 +62,7 @@ def main():
 
 @app.get('/progress')
 def progress():
+    """Display the progress of video download"""
     if dl_process is not None:
         return json.dumps({'progress': dl_process.progress,
                            'speed': dl_process.speed})
@@ -57,6 +73,7 @@ def progress():
 
 @app.post('/download')
 def do_download():
+    """Start the video download"""
     global dl_process
 
     try:
@@ -88,16 +105,18 @@ def do_download():
 
 @app.get('/complete')
 def complete():
+    """URL to display the success page"""
     return template(
         'result',
         title='Download complete',
-        subtitle=dl_process.get_file_name(),
+        subtitle=dl_process.file_name,
         dest_path=dl_process.dest_path
     )
 
 
 @app.get('/dl_error')
 def dl_error():
+    """URL to display an error page"""
     if dl_process is not None:
         sub = dl_process.error
     else:
@@ -112,6 +131,7 @@ def dl_error():
 
 @app.get('/cancel')
 def cancel():
+    """Cancel the current action"""
     global dl_process
 
     if dl_process is not None:
@@ -122,7 +142,10 @@ def cancel():
     redirect("index")
 
 parent_app.mount(APPLICATION_ROOT, app)
-parent_app.run(host='0.0.0.0', port=(config and config.get('port', 8080)) or 8080)
+parent_app.run(
+    host='0.0.0.0',
+    port=(config and config.get('port', 8080)) or 8080
+)
 
 # # DEBUG MODE
 # import bottle

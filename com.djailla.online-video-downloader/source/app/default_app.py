@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 from bottle import static_file, redirect, template, Bottle
 
+"""
+Put here all the basic route for a bottle base app
+"""
+
 parent_app = Bottle()
 app = Bottle()
 APPLICATION_ROOT = '/apps/online-video-downloader/'
