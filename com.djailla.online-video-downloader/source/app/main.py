@@ -144,10 +144,14 @@ def cancel():
 parent_app.mount(APPLICATION_ROOT, app)
 parent_app.run(
     host='0.0.0.0',
-    port=(config and config.get('port', 8080)) or 8080
+    port=(CONFIG and CONFIG.get('port', 8080)) or 8080
 )
 
 # # DEBUG MODE
 # import bottle
 # bottle.debug(True)
-# parent_app.run(host='0.0.0.0', port=(config and config.get('port', 8080)) or 8080, reloader=True)
+# parent_app.run(
+#     host='0.0.0.0',
+#     port=(CONFIG and CONFIG.get('port', 8080)) or 8080,
+#     reloader=True
+# )
