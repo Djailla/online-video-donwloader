@@ -4,19 +4,23 @@
 #
 
 PIDFILE=/opt/youtube/youtube.pid
-
 case $1 in
     start)
-    sed -i "s/\"port\":[0-9]*/\"port\":$RAINBOW_PORT_WEB_UI/" /opt/youtube/.config
+        sed -i "s/\"port\":[0-9]*/\"port\":$RAINBOW_PORT_WEB_UI/" /opt/youtube/.config
 
-    start-stop-daemon --start --background \
-        --chuid rainbow \
-        --make-pidfile --pidfile $PIDFILE \
-        --chdir /opt/youtube --startas main.py
+        start-stop-daemon --start \
+                          --make-pidfile \
+                          --pidfile $PIDFILE \
+                          --background \
+                          --chuid rainbow \
+                          --chdir /opt/youtube \
+                          --startas main.py
 
-    ;;
+        ;;
     stop)
-    start-stop-daemon --stop --pidfile $PIDFILE
-    rm $PIDFILE
-    ;;
+        start-stop-daemon --stop --pidfile $PIDFILE
+        rm $PIDFILE
+        ;;
 esac
+
+exit 0
