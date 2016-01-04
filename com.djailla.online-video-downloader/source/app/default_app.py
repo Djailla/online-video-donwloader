@@ -8,6 +8,7 @@ APPLICATION_ROOT = '/apps/online-video-downloader/'
 
 
 @parent_app.route('/')
+@parent_app.route(APPLICATION_ROOT[:-1])
 def parent_default():
     redirect(APPLICATION_ROOT)
 
