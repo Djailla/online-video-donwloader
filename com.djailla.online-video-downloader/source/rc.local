@@ -6,6 +6,7 @@
 PIDFILE=/opt/youtube/youtube.pid
 case $1 in
     start)
+        export LC_ALL=en_US.utf8
         sed -i "s/\"port\":[0-9]*/\"port\":$RAINBOW_PORT_WEB_UI/" /opt/youtube/.config
 
         start-stop-daemon --start \
