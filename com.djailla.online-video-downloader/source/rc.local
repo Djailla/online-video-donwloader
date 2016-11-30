@@ -1,7 +1,4 @@
 #!/bin/sh -e
-#
-# rc.local
-#
 
 PIDFILE=/opt/youtube/youtube.pid
 case $1 in

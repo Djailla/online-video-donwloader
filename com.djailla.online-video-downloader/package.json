@@ -2,13 +2,6 @@
     "type": "application",
     "id": "com.djailla.online-video-downloader",
     "version": "1.0.5-dev",
-    "depends": [
-        "org.debian.wheezy-lamp-1.2"
-    ],
-    "startup_mode": "auto",
-    "display_mode": "tab",
-    "redirect_mode": "transparent",
-    "network_ports": {
-        "WEB_UI": 4576
-    }
+    "depends": ["org.debian.jessie-lamp-1.0"],
+    "network_ports": {"WEB_UI": 4576}
 }

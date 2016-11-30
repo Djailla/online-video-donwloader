@@ -6,9 +6,11 @@ This is the main file for the bottle based web interface
 of the Online Video Downloader
 """
 
-import logging
+import bottle
 import json
+import logging
 import os
+import platform
 
 from bottle import request, redirect, template
 from youtube import YoutubeDownloadProcess
@@ -17,19 +19,22 @@ from default_app import app, parent_app, APPLICATION_ROOT
 LOGGER_FORMAT = '[%(asctime)-15s] - {%(levelname)s} - %(message)s'
 logging.basicConfig(format=LOGGER_FORMAT, level=logging.DEBUG)
 
+# Check if running of my Mac for dev
+if platform.system() == 'Darwin':
+    bottle.debug(True)
+    SHARES_ROOT_PATH = "/Users/gid509037/Perso/shares"
+else:
+    SHARES_ROOT_PATH = "/shares"
 
-SHARES_ROOT_PATH = "/shares"
-# SHARES_ROOT_PATH = "/Users/gid509037/Perso/shares"
-
-CONFIG_FILE = '/opt/youtube/.config'
-CONFIG = None
+RAINBOW_CONFIG_FILE = '/opt/youtube/.config'
+RAINBOW_CONFIG = None
 try:
-    with open(CONFIG_FILE) as f:
-        CONFIG = json.load(f)
+    with open(RAINBOW_CONFIG_FILE) as f:
+        RAINBOW_CONFIG = json.load(f)
 except IOError:
     logging.warning(
         'Failed to load configuration file (%s)',
-        CONFIG_FILE
+        RAINBOW_CONFIG_FILE
     )
 
 dl_process = None
@@ -144,14 +149,6 @@ def cancel():
 parent_app.mount(APPLICATION_ROOT, app)
 parent_app.run(
     host='0.0.0.0',
-    port=(CONFIG and CONFIG.get('port', 8080)) or 8080
+    port=(RAINBOW_CONFIG and RAINBOW_CONFIG.get('port', 8080)) or 8080,
+    reloader=(platform.system() == 'Darwin')
 )
-
-# # DEBUG MODE
-# import bottle
-# bottle.debug(True)
-# parent_app.run(
-#     host='0.0.0.0',
-#     port=(CONFIG and CONFIG.get('port', 8080)) or 8080,
-#     reloader=True
-# )

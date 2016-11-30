@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from bottle import static_file, redirect, template, Bottle
-
 """
 Put here all the basic route for a bottle base app
 """
+
+from bottle import static_file, redirect, template, Bottle
 
 parent_app = Bottle()
 app = Bottle()

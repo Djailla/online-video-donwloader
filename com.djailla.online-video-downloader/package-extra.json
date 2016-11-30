@@ -5,16 +5,14 @@
     "description_short": {
         "en": "Online Video Downloader is a program to download videos from YouTube.com and a few more sites."
     },
-    "visibility": "always",
-    "publisher_contact": "bastien.vallet@gmail.com",
+    "supported_languages": [
+        "en"
+    ],
     "categories": [
         "video",
         "multimedia"
     ],
-    "publication_date": "2016-05-04",
     "publisher_name": "Djailla",
-    "supported_languages": [
-        "en"
-    ],
+    "publisher_contact": "bastien.vallet@gmail.com",
     "website_url": "https://github.com/Djailla/online-video-donwloader/"
 }
