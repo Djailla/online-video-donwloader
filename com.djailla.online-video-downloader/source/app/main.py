@@ -13,7 +13,7 @@ import os
 import platform
 
 from bottle import request, redirect, template
-from youtube import YoutubeDownloadProcess
+from youtube import YoutubeDownloadThread
 from default_app import app, parent_app, APPLICATION_ROOT
 
 LOGGER_FORMAT = '[%(asctime)-15s] - {%(levelname)s} - %(message)s'
@@ -37,21 +37,21 @@ except IOError:
         RAINBOW_CONFIG_FILE
     )
 
-dl_process = None
+dl_thread = None
 
 
 @app.route('/')
 @app.route('/index')
 def main():
     """Main loop of the web interface"""
-    global dl_process
+    global dl_thread
 
-    if dl_process is not None:
-        if dl_process.is_alive():
+    if dl_thread is not None:
+        if dl_thread.isAlive():
             return template('progress')
         else:
-            dl_process.join()
-            dl_process = None
+            dl_thread.join()
+            dl_thread = None
 
     try:
         path_list = ''.join(
@@ -68,9 +68,9 @@ def main():
 @app.get('/progress')
 def progress():
     """Display the progress of video download"""
-    if dl_process is not None:
-        return json.dumps({'progress': dl_process.progress,
-                           'speed': dl_process.speed})
+    if dl_thread is not None:
+        return json.dumps({'progress': dl_thread.progress,
+                           'speed': dl_thread.speed})
     else:
         return json.dumps({'progress': -1,
                            'speed': ''})
@@ -79,7 +79,7 @@ def progress():
 @app.post('/download')
 def do_download():
     """Start the video download"""
-    global dl_process
+    global dl_thread
 
     try:
         dest_path = request.forms.get('dest_path')
@@ -93,11 +93,8 @@ def do_download():
                 subtitle='The destination path "%s" is not valid' % dest_path
             )
 
-        dl_process = YoutubeDownloadProcess()
-        dl_process.dest_path = dest_path
-        dl_process.subs = subs
-        dl_process.url = url
-        dl_process.start()
+        dl_thread = YoutubeDownloadThread(url, dest_path, subs)
+        dl_thread.start()
 
         return template('progress')
     except:
@@ -114,16 +111,16 @@ def complete():
     return template(
         'result',
         title='Download complete',
-        subtitle=dl_process.file_name,
-        dest_path=dl_process.dest_path
+        subtitle=dl_thread.file_name,
+        dest_path=dl_thread.dest_path
     )
 
 
 @app.get('/dl_error')
 def dl_error():
     """URL to display an error page"""
-    if dl_process is not None:
-        sub = dl_process.error
+    if dl_thread is not None:
+        sub = dl_thread.error
     else:
         sub = "Unknown error"
 
@@ -137,12 +134,12 @@ def dl_error():
 @app.get('/cancel')
 def cancel():
     """Cancel the current action"""
-    global dl_process
+    global dl_thread
 
-    if dl_process is not None:
-        dl_process.stop()
-        dl_process.join()
-        dl_process = None
+    if dl_thread is not None:
+        dl_thread.stop()
+        dl_thread.join()
+        dl_thread = None
 
     redirect("index")
 

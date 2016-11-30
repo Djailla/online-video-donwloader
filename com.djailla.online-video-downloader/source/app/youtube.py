@@ -1,21 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
+import humanize
 import os
-import re
+import youtube_dl
 
-from subprocess import Popen, PIPE, STDOUT
-from threading import Thread
+from threading import Thread, Event
 
 
-class YoutubeDownloadProcess(Thread):
-    url = ''
-    dest_path = ''
-    subs = False
+class YoutubeDownloadThread(Thread):
     video_file_name = ''
-
     progress = 0
-    process = None
     speed = ''
     size = ''
     error = ''
@@ -24,50 +21,49 @@ class YoutubeDownloadProcess(Thread):
     def file_name(self):
         return os.path.basename(self.video_file_name)
 
+    def __init__(self, url, dest_path, subs):
+        super(YoutubeDownloadThread, self).__init__()
+        self.url = url
+        self.dest_path = dest_path
+        self.subs = subs
+        self._stop = Event()
+
     def run(self):
-        cmd = [
-            "youtube-dl",
-            self.url,
-            "-o", self.dest_path.rstrip('/') + '/' + "%(title)s.%(ext)s",
-            "--newline",
-            "--no-check-certificate"
-        ]
-        if self.subs:
-            cmd.append('--all-subs')
+        def my_hook(d):
+            current_status = d['status']
+            if current_status == 'downloading':
+                self.video_file_name = d.get('filename')
 
-        self.process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
+                if d.get('speed'):
+                    self.speed = "%s/s" % humanize.naturalsize(d.get('speed'))
+                if d.get('total_bytes'):
+                    self.progress = (
+                        float(d.get('downloaded_bytes')) /
+                        float(d.get('total_bytes')) *
+                        100
+                    )
 
-        while 1:
-            line = self.process.stdout.readline()
-            if not line:
-                break
+                # print('Downloading in progress ...')
+                # print("--", self.video_file_name)
+                # print("--", self.speed)
+                # print("--", self.progress)
+            elif current_status == 'finished':
+                self.progress = 100
+                self.speed = '0 b/s'
+            elif current_status == 'error':
+                self.error = "Aie aie aie"
 
-            download_str = re.match(r'\[download\] (.*)', line)
-            if download_str:
-                already = re.match(r'\[download\] (.*) has already been downloaded', line)
-                if already:
-                    self.video_file_name = already.group(1)
-                    self.progress = 100
-
-                destination = re.match(r'\[download\] Destination: (.*)', line)
-                if destination:
-                    self.video_file_name = destination.group(1)
-
-                progress = re.match(r'\[download\] (.*)% of (.*) at (.*) ETA (.*)', line)
-                if progress:
-                    self.progress = float(progress.group(1))
-                    self.speed = progress.group(3)
-                    if not self.size:
-                        self.size = progress.group(2)
-
-            error_str = re.match(r'ERROR: (.*); please report (.*)', line)
-            if error_str:
-                self.progress = -1
-                self.error = error_str.group(1)
-                break
-
-        return
+        ydl_opts = {
+            'allsubtitles': self.subs,
+            'progress_hooks': [my_hook],
+            'nocheckcertificate': True,
+            'outtmpl': self.dest_path + '/' + "%(title)s.%(ext)s"
+        }
+        try:
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([self.url])
+        except Exception as exc:
+            self.error = str(exc)
 
     def stop(self):
-        if self.process is not None:
-            self.process.kill()
+        self._stop.set()
